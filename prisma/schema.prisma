@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  idAdmin  Int    @id @default(autoincrement())
+  uuid     String @unique @default("")
+  nama     String @default("")
+  email    String @unique @default("")
+  password String @default("")
+  telepon  Int    @unique
+}
+
+model Customer {
+  idCust   Int     @id @default(autoincrement())
+  uuid     String  @unique @default("")
+  nama     String  @default("")
+  email    String  @unique @default("")
+  password String  @default("")
+  alamat   String  @default("")
+  telepon  Int     @unique @default(0)
+  foto     String  @default("")
+  order    Order[]
+}
+
+model Order {
+  idOrder     Int        @id @default(autoincrement())
+  uuid        String     @unique @default("")
+  cust        Customer   @relation(fields: [custId], references: [idCust])
+  custId      Int
+  status      Status     @default(NEW)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  metodeBayar Metode     @default(CASH)
+  subOrder    SubOrder[]
+}
+
+enum Status {
+  NEW
+  PAID
+  DONE
+}
+
+enum Metode {
+  CASH
+  QRIS
+}
+
+model SubOrder {
+  idSubOrder Int    @id @default(autoincrement())
+  uuid       String @unique @default("")
+  order      Order  @relation(fields: [orderId], references: [idOrder])
+  orderId    Int
+  produk     Produk @relation(fields: [produkId], references: [idProduk])
+  produkId   Int
+}
+
+model Produk {
+  idProduk Int        @id @default(autoincrement())
+  uuid     String     @unique @default("")
+  nama     String     @default("")
+  desc     String     @default("") @db.Text
+  harga    Int
+  stok     Int
+  category Category   @default(BAJU)
+  foto     String     @default("")
+  SubOrder SubOrder[]
+}
+
+enum Category {
+  BAJU
+  GANTUNGAN
+  STIKER
+}

@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `customer` ADD COLUMN `foto` VARCHAR(191) NOT NULL DEFAULT '',
+    MODIFY `telepon` INTEGER NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE `order` ADD COLUMN `status` ENUM('NEW', 'PAID', 'DONE') NOT NULL DEFAULT 'NEW';
