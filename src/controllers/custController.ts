@@ -125,7 +125,7 @@ export const  changeProPic = async (request: Request,  response: Response) => {
     }
 }
 
-export const deletecustomer =  async (request: Request,  response: Response) => {
+export const deleteCustomer =  async (request: Request,  response: Response) => {
     try {
         const { id } = request.params
 

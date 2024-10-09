@@ -21,7 +21,7 @@ const editDataSchema = Joi.object({
     
 })
 
-export const verifyAddMenu = (request: Request, response: Response, next: NextFunction) => {
+export const verifyAddProduct = (request: Request, response: Response, next: NextFunction) => {
     const { error } = addDataSchema.validate(request.body, { abortEarly: false })
 
     if (error) {
