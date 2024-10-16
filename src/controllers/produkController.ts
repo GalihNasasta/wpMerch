@@ -56,7 +56,7 @@ export const createProduk = async (request: Request, response: Response) => {
 
 }
 
-export const updateMenu = async (request: Request, response: Response) => {
+export const updateProduk = async (request: Request, response: Response) => {
     try {
         const { id } = request.params
         const { nama, harga, category, stok, desc } = request.body
@@ -128,7 +128,7 @@ export const changePicture = async (request: Request, response: Response) => {
 
 }
 
-export  const deleteMenu = async (request: Request, response: Response) => {
+export  const deleteProduk = async (request: Request, response: Response) => {
     try {
         const { id } = request.params // untuk mencari id produk yang akan di hapus
 
