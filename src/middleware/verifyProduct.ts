@@ -9,6 +9,7 @@ const addDataSchema = Joi.object({
     harga: Joi.number().min(0).required(),
     category: Joi.string().valid("BAJU", "GANTUNGAN", "STIKER").required(),
     desc: Joi.string().optional(),
+    stok: Joi.number().required(),
     foto: Joi.string().optional()
 })
 
@@ -17,6 +18,7 @@ const editDataSchema = Joi.object({
     harga: Joi.number().min(0).optional(),
     category: Joi.string().valid('BAJU', 'GANTUNGAN', 'STIKER').optional(),
     desc: Joi.string().optional(),
+    stok: Joi.number().optional(),
     foto: Joi.string().optional(),
     
 })

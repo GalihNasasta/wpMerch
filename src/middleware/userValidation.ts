@@ -8,20 +8,22 @@ const authSchema = Joi.object({
 })
 
 const addDataSchema = Joi.object({
-    name: Joi.string().required(),
+    nama: Joi.string().required(),
     email: Joi.string().required(),
     password: Joi.string().min(3).alphanum().required(),
-    telepon: Joi.number().required(),
+    telepon: Joi.string().required(),
     alamat: Joi.string().required(),
+    role: Joi.string().required(),
     profile_picture: Joi.string().optional()
 })
 
 const editDataSchema = Joi.object({ 
-    name: Joi.string().optional(),
+    nama: Joi.string().optional(),
     email: Joi.string().optional(),
     password: Joi.string().min(3).alphanum().optional(),
-    telepon: Joi.number().optional(),
+    telepon: Joi.string().optional(),
     alamat: Joi.string().optional(),
+    role: Joi.string().optional(),
     profile_picture: Joi.string().optional()
     
 })

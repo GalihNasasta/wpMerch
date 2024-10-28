@@ -13,32 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  idAdmin  Int    @id @default(autoincrement())
-  uuid     String @unique @default("")
-  nama     String @default("")
-  email    String @unique @default("")
-  password String @default("")
-  telepon  Int    @unique
-}
-
-model Customer {
-  idCust   Int     @id @default(autoincrement())
+model User {
+  id   Int     @id @default(autoincrement())
   uuid     String  @unique @default("")
   nama     String  @default("")
   email    String  @unique @default("")
   password String  @default("")
   alamat   String  @default("")
-  telepon  Int     @unique @default(0)
+  telepon  String  @unique
   foto     String  @default("")
+  role     Role    @default(CUSTOMER)
   order    Order[]
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
 }
 
 model Order {
   idOrder     Int        @id @default(autoincrement())
   uuid        String     @unique @default("")
-  cust        Customer   @relation(fields: [custId], references: [idCust])
-  custId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
   status      Status     @default(NEW)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
