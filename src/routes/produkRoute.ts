@@ -1,8 +1,8 @@
 import express  from "express";
 import { getAllProduk, createProduk, updateProduk, deleteProduk, changePicture } from "../controllers/produkController";
 import { verifyAddProduct, verifyEditMenu } from "../middleware/verifyProduct";
-import uploadFile from "../middleware/produkUpload";
 import { verifyRole, verifyToken } from "../middleware/authorization";
+import uploadFile from "../middleware/produkUpload";
 
 const app = express()
 app.use(express.json())

@@ -13,7 +13,7 @@ const addDataSchema = Joi.object({
     password: Joi.string().min(3).alphanum().required(),
     telepon: Joi.string().required(),
     alamat: Joi.string().required(),
-    role: Joi.string().required(),
+    role: Joi.string().valid("ADMIN", "CUSTOMER").required(),
     profile_picture: Joi.string().optional()
 })
 
@@ -23,8 +23,9 @@ const editDataSchema = Joi.object({
     password: Joi.string().min(3).alphanum().optional(),
     telepon: Joi.string().optional(),
     alamat: Joi.string().optional(),
-    role: Joi.string().optional(),
-    profile_picture: Joi.string().optional()
+    role: Joi.string().valid("ADMIN", "CUSTOMER").optional(),
+    profile_picture: Joi.string().optional(),
+    user:Joi.optional()
     
 })
 

@@ -16,4 +16,9 @@ app.post('/register', [verifyAddData], register)
 app.put('/pic/:id', [uploadFile.single("foto")], changeProPic)
 app.delete('/:id', [verifyToken, verifyRole(["ADMIN"])], deleteUser)
 
+// app.get('/', getAllUser)
+// app.post('/', [verifyAddData], createUser)
+// app.delete('/:id', deleteUser)
+// app.post('/login', [verifyAuthentication], authentication)
+
 export default app

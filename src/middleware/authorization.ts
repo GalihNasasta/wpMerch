@@ -3,31 +3,31 @@ import { verify } from "jsonwebtoken";
 import { SECRET } from "../global";
 
 interface JwtPayload {
-    id: String,
-    name: String,
-    email: String,
-    role: String
+    id: string,
+    nama: string,
+    email: string,
+    role: string
 }
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ') [1];
+    const token = req.headers.authorization?.split(' ') [1]
 
     if (!token) {
-        return res.status(403).json({ message: 'Access denied. No token provided.' });
+        return res.status(400).json({ message: "Access denied. No token provided" })
     }
 
     try {
         const secretKey = SECRET || ""
-        const decoded = verify(token, secretKey);
-        req.body.user = decoded as JwtPayload;
+        const decoded = verify(token, secretKey)
+        req.body.user = decoded as JwtPayload
         next()
     } catch (error) {
-        return res.status(401).json({ message: 'Invalid token.' });
+        return res.status(401).json({ message: 'Invalid token' })
     }
-} 
+}
 
 export const verifyRole = (allowedRoles: string[]) => {
-    return (req : Request, res: Response, next: NextFunction) => {
+    return (req: Request, res: Response, next: NextFunction) => {
         const user = req.body.user
 
         if (!user) {
@@ -36,10 +36,11 @@ export const verifyRole = (allowedRoles: string[]) => {
 
         if (!allowedRoles.includes(user.role)) {
             return res.status(403)
-            .json({ message: `Access denied. 
-                Requires one of the following roles: ${allowedRoles.join(', ')}` })
+                .json({ 
+                    message: `Access denied. Requires one of the following roles: ${allowedRoles.join(', ')}`
+                })
         }
-
+        
         next()
     }
 }

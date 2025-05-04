@@ -32,9 +32,8 @@ export const getAllUser = async (request: Request,  response: Response) => {
 
 export  const createUser = async (request: Request,  response: Response) => {
     try {
-        const  { nama, email, password, telepon, alamat, role } = request.body
-        const uuid = uuidv4()
-
+        const  { nama, email, password, telepon, alamat, role } = request.body 
+        const uuid = uuidv4()                                                                                                
         const newUser = await prisma.user.create({
             data: { uuid, nama, email, password: md5(password), telepon, alamat, role }
         })
@@ -115,12 +114,54 @@ export const updateUser = async (request: Request,  response: Response) => {
     }
 }
 
+export const authentication = async  (request: Request, response: Response) => {
+    try {
+        const { email, password } = request.body
+
+        const  findUser = await prisma.user.findFirst({
+            where: { email, password: md5(password) }
+        })
+        if (!findUser) return response
+            .status(200)
+            .json({
+                status: false,
+                logged: false,
+                message: 'Email or password is invalid'
+            })
+
+        let data = {
+            id:  findUser.id,
+            name:  findUser.nama,
+            email:   findUser.email,
+            role: findUser.role
+        }
+
+        let payload = JSON.stringify(data)
+
+        let token = sign(payload, SECRET || "token")
+
+        return response
+            .status(200)
+            .json({ status:  true,
+                logged: true,
+                message: "Login Success",
+                token: token
+            })
+    }  catch (error) {
+        return response.json({
+            status: false,
+            message: `There is an error. ${error}`
+        })
+        .status(400)
+    }
+}
+
 export const updateCust = async (request: Request,  response: Response) => {
     try {
         const { id } = request.params
         const { nama,  email, password, telepon, alamat } = request.body
         const role = "CUSTOMER"
-
+        
         const findCust = await prisma.user.findFirst({ where: { id: Number(id) } })
         if  (!findCust) return response
         .status(200)
@@ -219,41 +260,4 @@ export const deleteUser =  async (request: Request,  response: Response) => {
         }).status(400)
     }
 
-}
-
-export const authentication = async  (request: Request, response: Response) => {
-    try {
-        const { email, password } = request.body
-
-        const  findUser = await prisma.user.findFirst({
-            where: { email, password: md5(password) }
-        })
-        if (!findUser) return response
-            .status(200)
-            .json({
-                status: false,
-                logged: false,
-                message: 'Email or password is invalid'
-            })
-
-        let data = {
-            id:  findUser.id,
-            name:  findUser.nama,
-            email:   findUser.email
-        }
-
-        let payload = JSON.stringify(data)
-
-        let token = sign(payload, SECRET || "token")
-
-        return response
-            .status(200)
-            .json({ status:  true, logged: true, message: "Login Success", token })
-    }  catch (error) {
-        return response.json({
-            status: false,
-            message: `There is an error. ${error}`
-        })
-        .status(400)
-    }
 }

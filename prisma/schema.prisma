@@ -13,34 +13,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id   Int     @id @default(autoincrement())
-  uuid     String  @unique @default("")
-  nama     String  @default("")
-  email    String  @unique @default("")
-  password String  @default("")
-  alamat   String  @default("")
-  telepon  String  @unique
-  foto     String  @default("")
-  role     Role    @default(CUSTOMER)
-  order    Order[]
-}
-
 enum Role {
   ADMIN
   CUSTOMER
-}
-
-model Order {
-  idOrder     Int        @id @default(autoincrement())
-  uuid        String     @unique @default("")
-  user        User       @relation(fields: [userId], references: [id])
-  userId      Int
-  status      Status     @default(NEW)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  metodeBayar Metode     @default(CASH)
-  subOrder    SubOrder[]
 }
 
 enum Status {
@@ -54,29 +29,59 @@ enum Metode {
   QRIS
 }
 
-model SubOrder {
-  idSubOrder Int    @id @default(autoincrement())
-  uuid       String @unique @default("")
-  order      Order  @relation(fields: [orderId], references: [idOrder])
-  orderId    Int
-  produk     Produk @relation(fields: [produkId], references: [idProduk])
-  produkId   Int
-}
-
-model Produk {
-  idProduk Int        @id @default(autoincrement())
-  uuid     String     @unique @default("")
-  nama     String     @default("")
-  desc     String     @default("") @db.Text
-  harga    Int
-  stok     Int
-  category Category   @default(BAJU)
-  foto     String     @default("")
-  SubOrder SubOrder[]
-}
-
 enum Category {
   BAJU
   GANTUNGAN
   STIKER
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  uuid     String  @unique @default("")
+  nama     String  @default("")
+  email    String  @unique @default("")
+  password String  @default("")
+  alamat   String  @default("")
+  telepon  String  @unique
+  foto     String  @default("")
+  role     Role    @default(CUSTOMER)
+  order    Order[]
+}
+
+model Order {
+  idOrder     Int        @id @default(autoincrement())
+  uuid        String     @unique @default("")
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  status      Status     @default(NEW)
+  totalBayar  Int?
+  bukti_bayar String     @default("")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  metodeBayar Metode     @default(QRIS)
+  subOrder    SubOrder[]
+}
+
+model SubOrder {
+  idSubOrder Int     @id @default(autoincrement())
+  uuid       String  @unique @default("")
+  order      Order?  @relation(fields: [orderId], references: [idOrder])
+  orderId    Int?
+  produk     Produk? @relation(fields: [produkId], references: [id])
+  produkId   Int?
+  quantity   Int?
+  note       String?
+  alamat     String?
+}
+
+model Produk {
+  id       Int        @id @default(autoincrement())
+  uuid     String     @unique @default("")
+  nama     String     @default("")
+  desc     String     @default("") @db.Text
+  harga    Int        @default(0)
+  stok     Int
+  category Category   @default(BAJU)
+  foto     String     @default("")
+  SubOrder SubOrder[]
 }

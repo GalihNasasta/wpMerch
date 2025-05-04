@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `produk` MODIFY `harga` INTEGER NOT NULL DEFAULT 0;

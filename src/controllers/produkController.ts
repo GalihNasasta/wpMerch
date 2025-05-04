@@ -61,7 +61,7 @@ export const updateProduk = async (request: Request, response: Response) => {
         const { id } = request.params
         const { nama, harga, category, stok, desc } = request.body
 
-        const findProduk = await prisma.produk.findFirst({ where: { idProduk: Number(id) } })
+        const findProduk = await prisma.produk.findFirst({ where: { id: Number(id) } })
         if  (!findProduk) return response
             .status(200)
             .json({ status: false, message: "Product is not found" })
@@ -71,9 +71,10 @@ export const updateProduk = async (request: Request, response: Response) => {
                 nama: nama || findProduk.nama,
                 harga: harga ? Number(harga) : findProduk.harga,
                 category: category || findProduk.category,
-                desc: desc || desc.description
+                desc: desc || desc.description,
+                stok: stok || findProduk.stok
             },
-            where: { idProduk: Number(id) }
+            where: { id: Number(id) }
         })
 
         return response.json({
@@ -95,7 +96,7 @@ export const changePicture = async (request: Request, response: Response) => {
     try {
         const  { id } = request.params
 
-        const  findMenu = await prisma.produk.findFirst({ where: { idProduk: Number(id) } })
+        const  findMenu = await prisma.produk.findFirst({ where: { id: Number(id) } })
         if  (!findMenu) return response
             .status(200)
             .json({ status: false, message: 'Product is not found' })
@@ -110,7 +111,7 @@ export const changePicture = async (request: Request, response: Response) => {
 
         const updatePicture = await  prisma.produk.update({
             data: { foto: filename },
-            where: { idProduk: Number(id) }
+            where: { id: Number(id) }
         })
 
         return response.json({
@@ -132,7 +133,7 @@ export  const deleteProduk = async (request: Request, response: Response) => {
     try {
         const { id } = request.params // untuk mencari id produk yang akan di hapus
 
-        const findMenu = await prisma.produk.findFirst({ where: { idProduk: Number(id) }})
+        const findMenu = await prisma.produk.findFirst({ where: { id: Number(id) }})
         if  (!findMenu) return response
             .status(200)
             .json({ status: false, message: 'Produk is not found' })
@@ -144,7 +145,7 @@ export  const deleteProduk = async (request: Request, response: Response) => {
         if(exist && findMenu.foto !== ``) fs.unlinkSync(path)
 
         const  deleteMenu = await prisma.produk.delete({
-            where: { idProduk: Number(id) }
+            where: { id: Number(id) }
         })
         return  response.json({
             status: true,

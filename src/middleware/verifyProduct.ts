@@ -10,7 +10,8 @@ const addDataSchema = Joi.object({
     category: Joi.string().valid("BAJU", "GANTUNGAN", "STIKER").required(),
     desc: Joi.string().optional(),
     stok: Joi.number().required(),
-    foto: Joi.string().optional()
+    foto: Joi.string().optional(),
+    user: Joi.optional()
 })
 
 const editDataSchema = Joi.object({
@@ -20,7 +21,7 @@ const editDataSchema = Joi.object({
     desc: Joi.string().optional(),
     stok: Joi.number().optional(),
     foto: Joi.string().optional(),
-    
+    user: Joi.optional()
 })
 
 export const verifyAddProduct = (request: Request, response: Response, next: NextFunction) => {
